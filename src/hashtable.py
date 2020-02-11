@@ -40,6 +40,7 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
+
         return self._hash(key) % self.capacity
 
 
@@ -51,7 +52,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        key_hash = self._hash_mod(key)
+        key_value = (key, value)
+
+        if self.storage[key_hash] is None:
+            self.storage[key_hash] = key_value
+        else:
+            print(f"Warning: Collision has ocurred at {key_hash}")
+            return
+            # for pair in self.storage:
+            #     if pair[0] == key:
+            #         pair[1] = value
+            # self.storage[key_hash].append(key_value)
 
 
 
@@ -63,7 +75,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        key_hash = self._hash_mod(key)
+
+        if self.storage[key_hash] is None:
+            print("Warning: key not found.")
+        # for i in range(0, len(self.storage[key_hash])):
+        #     if self.storage[key_hash][i][0] == key:
+        #         self.storage[key_hash].pop(i)
+        else:
+            if self.storage[key_hash][0] == key:
+                self.storage[key_hash] = None
+            else:
+                print("Warning: collision")
 
 
     def retrieve(self, key):
@@ -74,7 +97,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        key_hash = self._hash_mod(key)
+
+        if self.storage[key_hash] is not None:
+            if self.storage[key_hash][0] == key:
+                return self.storage[key_hash][1]
+        else:
+            return None
+        
 
 
     def resize(self):
@@ -84,8 +114,12 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        old_storage = self.storage
+        self.capacity *= 2
+        self.storage = [None] * self.capacity
 
+        for i in old_storage:
+            self.insert(i[0], i[1])
 
 
 if __name__ == "__main__":

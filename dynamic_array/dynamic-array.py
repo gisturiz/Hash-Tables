@@ -27,5 +27,15 @@ class DynamicArray:
             print("Error: array is full")
             return
 
+        self.storage[self.count] = value
         self.count += 1
-        self.storage(self.count - 1) = value
+
+    def double_size(self):
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+
+        for i in range(self.count):
+            new_storage[i] = self.storage[i]
+
+        self.storage = new_storage
+        
