@@ -20,7 +20,6 @@ class HashTable:
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
-
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
         return hash(key)
@@ -29,7 +28,6 @@ class HashTable:
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
         OPTIONAL STRETCH: Research and implement DJB2
         '''
         pass
@@ -47,17 +45,16 @@ class HashTable:
     def insert(self, key, value):
         '''
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
         Fill this in.
         '''
         key_hash = self._hash_mod(key)
-        key_value = (key, value)
+        new_node = LinkedPair(key, value)
 
         if self.storage[key_hash] is None:
-            self.storage[key_hash] = key_value
+            self.storage[key_hash] = new_node
         else:
+            self.storage[key_hash] = new_node.next
             print(f"Warning: Collision has ocurred at {key_hash}")
             return
             # for pair in self.storage:
@@ -70,9 +67,7 @@ class HashTable:
     def remove(self, key):
         '''
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
         Fill this in.
         '''
         key_hash = self._hash_mod(key)
@@ -92,16 +87,14 @@ class HashTable:
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
         Fill this in.
         '''
         key_hash = self._hash_mod(key)
 
         if self.storage[key_hash] is not None:
-            if self.storage[key_hash][0] == key:
-                return self.storage[key_hash][1]
+            if self.storage[key_hash].key == key:
+                return self.storage[key_hash].next
         else:
             return None
         
@@ -111,7 +104,6 @@ class HashTable:
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
         old_storage = self.storage
